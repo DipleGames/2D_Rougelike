@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: -7047736298044695661}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -187,9 +187,6 @@ MonoBehaviour:
   speed: 0
   exp: 0
   level: 0
-  characterList:
-  - {fileID: 11400000, guid: d41856e3953a7764fbe6a5e6d7940257, type: 2}
-  - {fileID: 11400000, guid: e97399e3fb6f94e4f89df356dbe6e246, type: 2}
   targetPoint: {x: 0, y: 0, z: 0}
 --- !u!50 &3425871384087813876
 Rigidbody2D:
@@ -217,7 +214,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!61 &-7047736298044695661
 BoxCollider2D:
   m_ObjectHideFlags: 0

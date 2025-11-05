@@ -1,35 +1,52 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class EnemyController : MonoBehaviour
 {
-    public Transform target;            // 플레이어 Transform
-    private NavMeshAgent agent;
-    private SpriteRenderer sr;
+    public Transform target;
 
-    void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        sr = GetComponent<SpriteRenderer>();
+    [Header("적 객체")]
+    public Enemy enemy;
 
-        // 2D 세팅 핵심
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
-    }
+    [Header("적 스펙")]
+    public float enemyHp;
+    public float enemySpeed;
+
+    private SpriteRenderer spriteRenderer;
 
     void Start()
     {
-        target = PlayerController.Instance.transform;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        EnemyInit();
+
+        target = GameObject.FindWithTag("Player").transform;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (target == null) return;
+        EnemyAI();
+    }
 
-        agent.SetDestination(target.position);
+    void EnemyAI()
+    {
+         // 방향 벡터 계산
+        Vector3 dir = (target.position - transform.position).normalized;
 
-        // 좌우 반전(스프라이트가 좌우만 바뀌면 되는 경우)
-        if (sr != null && agent.velocity.sqrMagnitude > 0.0001f)
-            sr.flipX = agent.velocity.x > 0f;
+        // 이동
+        transform.position += dir * enemySpeed * Time.deltaTime;
+
+        // 플립
+        if (transform.position.x > target.position.x)
+            spriteRenderer.flipX = true;
+        else
+            spriteRenderer.flipX = false;
+    }
+    
+    void EnemyInit()
+    {
+        spriteRenderer.sprite = enemy.sprite;
+        enemyHp = enemy.hp;
+        enemySpeed = enemy.speed;   
     }
 }
