@@ -10,6 +10,8 @@ public class PlayerManager : SingleTon<PlayerManager>
     [Header("세팅된 플레이어 객체 / 컴퍼넌트")]
     public GameObject player;
     public PlayerController playerController;
+    public PlayerStats playerStats;
+    public StatCalculator statCalculator;
     public SpriteRenderer spriteRenderer;
 
     void Start()
@@ -18,8 +20,10 @@ public class PlayerManager : SingleTon<PlayerManager>
         player = GameObject.FindGameObjectWithTag("Player");
 
         // 2. 그 객체의 컴퍼넌트를 담는다.
-        playerController = player.GetComponent<PlayerController>();
+        playerStats = player.GetComponent<PlayerStats>();
+        statCalculator = player.GetComponent<StatCalculator>();
         spriteRenderer = player.GetComponent<SpriteRenderer>();
+        playerController = player.GetComponent<PlayerController>();
     }
 
     void Update()
@@ -32,31 +36,22 @@ public class PlayerManager : SingleTon<PlayerManager>
         switch (key)
         {
             case KeyCode.Alpha1:
-                playerController.character = characterList[0];
-                PlayerInit();
+                playerStats.character = characterList[0];
+                InitPlayer();
                 break;
 
             case KeyCode.Alpha2:
-                playerController.character = characterList[1];
-                PlayerInit();
+                playerStats.character = characterList[1];
+                InitPlayer();
                 break;
         }
         // =========
     }
 
-    /// <summary>
-    /// 플레이어의 스펙을 세팅하는 메서드
-    /// </summary>
-    void PlayerInit()
+    public void InitPlayer()
     {
-        // 플레이어의 이미지.
-        spriteRenderer.sprite = playerController.character.sprite;
-
-        // 플레이어의 스펙.
-        playerController.hp = playerController.character.hp;
-        playerController.mp = playerController.character.mp;
-        playerController.speed = playerController.character.speed;
-        playerController.exp = playerController.character.exp;
-        playerController.level = playerController.character.level;
+        // 캐릭터 기본 선택
+        spriteRenderer.sprite = playerStats.character.sprite;
+        statCalculator.DefaultCulculate();
     }
 }

@@ -130,13 +130,13 @@ public class SpawnManager : SingleTon<SpawnManager>
         {
             if (_alive < maxAlive)
             {
-                TrySpawnOne();
+                TrySpawnEnemy();
             }
             yield return wait;
         }
     }
 
-    private void TrySpawnOne()
+    private void TrySpawnEnemy()
     {
         if (_pools.Count == 0 || playerTr == null) return;
 

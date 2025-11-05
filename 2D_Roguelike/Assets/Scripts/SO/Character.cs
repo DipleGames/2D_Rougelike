@@ -7,9 +7,9 @@ public class Character : ScriptableObject
     public Sprite sprite;
 
     [Header("캐릭터 기본스펙")]
-    public float hp;
-    public float mp;
-    public float speed;
+    public float baseHp;
+    public float baseMp;
+    public float baseSpeed;
     public float exp;
     public int level;
 }
