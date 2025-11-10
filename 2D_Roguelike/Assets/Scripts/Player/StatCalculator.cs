@@ -67,7 +67,7 @@ public class StatCalculator : MonoBehaviour
         // 1) 성장테이블 기반 스펙업
         _stat[StatType.MaxHp] += 10f;
         _stat[StatType.MaxMp] += 10f;
-        _stat[StatType.Speed] += 0.5f;
+        _stat[StatType.Speed] += 0.1f;
         _stat[StatType.Attack] += +2f;
         _stat[StatType.DrainArea] += 0f;
 

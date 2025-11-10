@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
         if (pm.playerStat == null) return;
         if (!pm.playerStat.stat.ContainsKey(StatType.Speed)) return;
         transform.position = Vector3.MoveTowards(transform.position, targetPoint, pm.playerStat.stat[StatType.Speed] * Time.deltaTime);
-        
+
         if (Input.GetKeyDown(KeyCode.A)) key = KeyCode.A;
         else if (Input.GetKeyDown(KeyCode.Q)) key = KeyCode.Q;
         else if (Input.GetKeyDown(KeyCode.W)) key = KeyCode.W;
@@ -98,6 +98,22 @@ public class PlayerController : MonoBehaviour
 
         key = KeyCode.None; // ← 매 프레임 끝에 리셋
     }
+    
+    /// <summary>
+    /// enemyController 처리하지않는 이유는 적끼리 닿았을때도 이 함수를 호출하여 연산이 많아짐
+    /// 코드는 enemyController에서 처리하는게 깔끔하나 연산 줄이고자 여기서 처리하는걸로 함.
+    /// </summary>
+    /// <param name="collision"></param>
+    void OnCollisionStay2D(Collision2D collision) 
+    {
+        Debug.Log("충돌중");
+        if(collision.collider.CompareTag("Enemy"))
+        {
+            EnemyController enemyController = collision.collider.GetComponent<EnemyController>();
+            enemyController.Attack();
+        }
+    }
+
 
 
     public void OnApplyVital(Dictionary<StatType, float> newStat)

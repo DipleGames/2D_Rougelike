@@ -55,21 +55,16 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
-        EnemyAI();
+        Move();
     }
 
-    void EnemyAI()
+    void EnemyAI() // 나중에 좀 똑똑하게 바꿀때 쓸꺼임
     {
         Move();
     }
 
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        Attack();
-    }
-
     float t = 0.9f;
-    void Attack()
+    public void Attack()
     {
         t += Time.deltaTime;
         if(t >= _delay)

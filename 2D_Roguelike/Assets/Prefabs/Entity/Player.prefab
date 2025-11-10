@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 2519865956934492782}
   m_Layer: 6
   m_Name: Drain
-  m_TagString: Untagged
+  m_TagString: Drain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
