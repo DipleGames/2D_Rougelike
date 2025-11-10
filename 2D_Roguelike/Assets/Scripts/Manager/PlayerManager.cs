@@ -7,17 +7,23 @@ public class PlayerManager : SingleTon<PlayerManager>
     [Header("캐릭터 목록")]
     [SerializeField] private Character[] _characterList;
 
-
-    [Header("세팅된 플레이어 객체 / 컴퍼넌트")]
-    public GameObject player;
+    [Header("Controller")]
     public PlayerController playerController;
+    public Aim aim;
+
+    [Header("Model")]
+    public GameObject player;
     public BattleSystem battleSystem;
     public LevelSystem levelSystem; 
     public PlayerStat playerStat;
     public StatCalculator statCalculator;
     public Drain drain;
+
+    
+    [Header("컴퍼넌트")]
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
+
 
     [Header("현재 선택된 캐릭터")]
     public Character character; // 얘가 중요한거임 일단.
@@ -28,11 +34,14 @@ public class PlayerManager : SingleTon<PlayerManager>
 
         // 2. 그 객체의 컴퍼넌트를 담는다.
         playerController = player.GetComponent<PlayerController>();
+        aim = player.GetComponent<Aim>();
+
         battleSystem = player.GetComponent<BattleSystem>();
         levelSystem = player.GetComponent<LevelSystem>();
         playerStat = player.GetComponent<PlayerStat>();
         statCalculator = player.GetComponent<StatCalculator>();
         drain = player.GetComponentInChildren<Drain>();
+        
         spriteRenderer = player.GetComponent<SpriteRenderer>();
         rb = player.GetComponent<Rigidbody2D>();
     }

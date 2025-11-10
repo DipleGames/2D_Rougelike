@@ -29,7 +29,7 @@ public class AgumentManager : SingleTon<AgumentManager>
             hash.Add(ran);
         }
 
-        List<int> list = hash.ToList();  // using System.Lin
+        List<int> list = hash.ToList();  // using System.Linq
         for(int i=0; i<agumentBtns.Length; i++)
         {
             AgumentData data = agumentBtns[i].GetComponent<AgumentData>();
@@ -47,7 +47,8 @@ public class AgumentManager : SingleTon<AgumentManager>
             Debug.Log(data.agument.agumentName);
         }
         _pm.statCalculator.CalculateOnSelecetAgument(data);
-        _um.SwitchUI(_um.augument_Panel);
+        _um.SwitchUI(_um.agumentView.augument_Panel);
+        hash.Clear();
         GameManager.Instance.SwitchGame();
     }
 }
