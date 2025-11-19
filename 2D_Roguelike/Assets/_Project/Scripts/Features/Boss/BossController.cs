@@ -1,15 +1,16 @@
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using TMPro;
 
 public class BossController : MonoBehaviour
 {
     public GameObject target;
-    public Boss boss;
+    public Boss[] boss;
 
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider2D;
-    private Slider slider;
+    [SerializeField] private TextMeshProUGUI health_Text;
     private Animator anim;
     private Rigidbody2D rb;
 
@@ -21,7 +22,7 @@ public class BossController : MonoBehaviour
         get => _bossHp;
         set
         {
-            float max = boss.bossHp;
+            float max = boss[GameManager.Instance.Stage - 1].bossHp;
             float nv = Mathf.Clamp(value, 0f, max); // 밸류값이 0과 max사이에서 nv에 저장하고
             if (Mathf.Approximately(_bossHp, nv)) return; // 기존 hp값과 새로운 밸류값이 차이가없으면 리턴해버리고
             float ov = _bossHp; // 차이가 있다면 기존 hp값을 잠시 넣어둔다음 
@@ -38,11 +39,11 @@ public class BossController : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
+        health_Text = GetComponentInChildren<TextMeshProUGUI>();
         rb = GetComponent<Rigidbody2D>();
-        slider = GetComponentInChildren<Slider>();
         anim = GetComponent<Animator>();
 
-        OnBossHpChanged += UpdateBossHealthBarUI;
+        OnBossHpChanged += UpdateBossHealthTextUI;
         OnBossDie += BossDie;
         OnBossDie += GameManager.Instance.OnGeneralPhase;
     }
@@ -51,6 +52,7 @@ public class BossController : MonoBehaviour
     void Start()
     {
         BossInit();
+        SetColliderSize();
         target = GameObject.FindWithTag("Player");  
     }
 
@@ -61,15 +63,15 @@ public class BossController : MonoBehaviour
         _t += Time.deltaTime;
         if(_patternDelay <= _t)
         {
-            int ran = UnityEngine.Random.Range(0,boss.patterns.Length);    
-            StartCoroutine(boss.patterns[ran].pattern.ExecutePattern(this, boss.patterns[ran].parameters));
+            int ran = UnityEngine.Random.Range(0,boss[GameManager.Instance.Stage - 1].patterns.Length);    
+            StartCoroutine(boss[GameManager.Instance.Stage - 1].patterns[ran].pattern.ExecutePattern(this, boss[GameManager.Instance.Stage - 1].patterns[ran].parameters));
             _t = 0f;
         }
     }
 
-    void UpdateBossHealthBarUI(float maxHp, float currentHp)
+    void UpdateBossHealthTextUI(float maxHp, float currentHp)
     {
-        slider.value = currentHp / maxHp;
+        health_Text.text = $"{(int)currentHp}";
     }
 
     public void TakeDamage(float amount)
@@ -78,10 +80,17 @@ public class BossController : MonoBehaviour
         anim.SetTrigger("Hit");
     }
 
+    public void SetColliderSize()
+    {
+        var lb = spriteRenderer.localBounds;   // 피벗 반영된 로컬 공간 Bounds
+        boxCollider2D.size   = lb.size;       // 가로/세로
+        boxCollider2D.offset = lb.center;     // 피벗이 중앙이 아니어도 정렬됨
+    }
+
     public void BossInit()
     {
-        spriteRenderer.sprite = boss.sprite;
-        BossHP = boss.bossHp;
+        spriteRenderer.sprite = boss[GameManager.Instance.Stage - 1].sprite;
+        BossHP = boss[GameManager.Instance.Stage - 1].bossHp;
     }
 
     public void BossDie()

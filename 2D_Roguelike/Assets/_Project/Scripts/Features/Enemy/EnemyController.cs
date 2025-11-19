@@ -36,7 +36,7 @@ public class EnemyController : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider2D;
-    private Slider slider;
+    private Text health_Text;
     private Animator anim;
     private Rigidbody2D rb;
 
@@ -45,9 +45,9 @@ public class EnemyController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
-        slider = GetComponentInChildren<Slider>();
+        health_Text = GetComponentInChildren<Text>();
         anim = GetComponent<Animator>();
-        OnEnemyHpChanged += UpdateHealthBarUI;
+        OnEnemyHpChanged += UpdateHealthTextUI;
     }
 
     void Start()
@@ -93,9 +93,9 @@ public class EnemyController : MonoBehaviour
             spriteRenderer.flipX = false;
     }
 
-    void UpdateHealthBarUI(float maxHp, float currentHp)
+    void UpdateHealthTextUI(float maxHp, float currentHp)
     {
-        slider.value = currentHp / maxHp;
+        health_Text.text = $"{(int)currentHp}";
     }
 
     public void SetColliderSize()

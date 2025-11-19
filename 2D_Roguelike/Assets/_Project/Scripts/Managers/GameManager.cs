@@ -7,6 +7,8 @@ public class GameManager : SingleTon<GameManager>
 {
     [Header("게임 상태")]
     public GameState gameState = GameState.General;
+    [SerializeField] private int _stage = 1;
+    public int Stage => _stage;
 
     [Header("분노 게이지")]
     [SerializeField] private float _maxThreatGuage = 100f;
@@ -70,6 +72,7 @@ public class GameManager : SingleTon<GameManager>
         {
             gtmr.enabled = true;
         }
+        _stage++;
         ClearBossPatterns();
         AudioManager.Instance.PlayGeneralBGM();
     }

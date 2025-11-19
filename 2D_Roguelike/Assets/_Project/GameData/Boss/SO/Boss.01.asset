@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c56996a7f774a4342be15c4ba205cb45, type: 3}
   m_Name: Boss.01
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 0a8682e29943e124da515b562da78d42, type: 3}
+  sprite: {fileID: 21300000, guid: f55b2d0c3ac2a47419c7c6405a3e3511, type: 2}
   bossHp: 1000
   patterns:
   - pattern: {fileID: 11400000, guid: 8132104e53fd8ac4c91b9ae518679024, type: 2}

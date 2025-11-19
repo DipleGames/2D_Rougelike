@@ -7,8 +7,8 @@ public class EnemyManager : SingleTon<EnemyManager>
 
     public Enemy SelectEnemy()
     {
-        int ran = Random.Range(0, enemyList.Length);
+        int stage = GameManager.Instance.Stage;
 
-        return enemyList[ran];
+        return enemyList[stage - 1];
     } 
 }

@@ -176,4 +176,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projSpeed: 20
-  _lifetime: 5
+  _lifetime: 0.5
+  _damage: 0
