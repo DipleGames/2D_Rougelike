@@ -23,6 +23,7 @@ public class SkillSlot : MonoBehaviour
     {
         skillInstance = new SkillInstance { skill = skill };
         skillUpgradeBtn.skill = skillInstance.skill;
+        skillUpgradeBtn.InitSkillUpgradeBtn();
         icon.sprite = skill.skillDefinition.skillIcon;
     }
 }

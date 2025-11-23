@@ -21,23 +21,23 @@ MonoBehaviour:
   cooldown: 3
   manaCost: 5
   actions:
-  - action: {fileID: 11400000, guid: a6f3ce734dd3d7744bae2755e1a7e6c3, type: 2}
-    parameters:
-      rid: 2773896640084312149
   - action: {fileID: 11400000, guid: 2db5c651977de324d99a4e1ec0221762, type: 2}
     parameters:
-      rid: 2773896640084312204
+      rid: 2773896810579624023
+  - action: {fileID: 11400000, guid: a6f3ce734dd3d7744bae2755e1a7e6c3, type: 2}
+    parameters:
+      rid: 2773896810579624024
   references:
     version: 2
     RefIds:
-    - rid: 2773896640084312149
+    - rid: 2773896810579624023
+      type: {class: DamageAction/DamageParams, ns: , asm: Assembly-CSharp}
+      data:
+        damage: 3
+    - rid: 2773896810579624024
       type: {class: ProjectileAction/ProjectileParams, ns: , asm: Assembly-CSharp}
       data:
         projectilePrefab: {fileID: 9030406929817389136, guid: 7282a204f35ae5041879317013290a6f, type: 3}
         speed: 20
         lifeTime: 3
         isPenetrate: 0
-    - rid: 2773896640084312204
-      type: {class: DamageAction/DamageParams, ns: , asm: Assembly-CSharp}
-      data:
-        damage: 3

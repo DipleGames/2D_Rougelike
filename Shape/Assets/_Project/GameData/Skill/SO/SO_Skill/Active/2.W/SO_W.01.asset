@@ -21,21 +21,21 @@ MonoBehaviour:
   cooldown: 8
   manaCost: 10
   actions:
-  - action: {fileID: 11400000, guid: 3f2a214896d29e8428866ee5f8aabc13, type: 2}
-    parameters:
-      rid: 2773896640084312239
   - action: {fileID: 11400000, guid: 2db5c651977de324d99a4e1ec0221762, type: 2}
     parameters:
-      rid: 2773896640084312240
+      rid: 2773896810579624025
+  - action: {fileID: 11400000, guid: 3f2a214896d29e8428866ee5f8aabc13, type: 2}
+    parameters:
+      rid: 2773896810579624027
   references:
     version: 2
     RefIds:
-    - rid: 2773896640084312239
+    - rid: 2773896810579624025
+      type: {class: DamageAction/DamageParams, ns: , asm: Assembly-CSharp}
+      data:
+        damage: 5
+    - rid: 2773896810579624027
       type: {class: ExplosionAction/ExplosionParams, ns: , asm: Assembly-CSharp}
       data:
         explosionPrefab: {fileID: 936896657287374117, guid: e2cd8960a958edf4f94e329c86d49cb9, type: 3}
         lifeTime: 0.5
-    - rid: 2773896640084312240
-      type: {class: DamageAction/DamageParams, ns: , asm: Assembly-CSharp}
-      data:
-        damage: 5

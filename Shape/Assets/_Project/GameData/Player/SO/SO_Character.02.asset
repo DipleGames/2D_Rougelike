@@ -21,7 +21,7 @@ MonoBehaviour:
   drainArea: 1.5
   CriticalProb: 0
   CriticalValue: 1.5
-  aaObj: {fileID: 8623997000863016169, guid: d547b417a30ae71488eaf7698feea0ef, type: 3}
+  aaProj: {fileID: 8623997000863016169, guid: d547b417a30ae71488eaf7698feea0ef, type: 3}
   D_Skill: {fileID: 0}
   Q_Skill: {fileID: 0}
   W_Skill: {fileID: 0}

@@ -2,27 +2,50 @@ using UnityEngine;
 
 public class Aim : MonoBehaviour
 {
-    void FixedUpdate()
+    [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private Canvas canvas;
+
+    void Awake()
     {
-        Look();
+        // 자기 RectTransform 자동 캐싱
+        if (rectTransform == null)
+            rectTransform = transform as RectTransform;
+
+        // 부모에서 Canvas 자동 찾기
+        if (canvas == null)
+            canvas = GetComponentInParent<Canvas>();
     }
 
-    public void Look()
+    void Update()
     {
-        // 마우스의 월드 좌표 구하기
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-
-        // 원 중심(this.transform) → 마우스 방향 벡터
-        Vector3 dirVec = (mousePos - transform.position).normalized;
-
-        float angle = Mathf.Atan2(dirVec.y, dirVec.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        FollowMouse();
     }
-    
-    public Vector3 GetAimPos()
+
+    void FollowMouse()
+    {
+        if (canvas == null || rectTransform == null)
+        {
+            Debug.LogError("Aim: canvas 또는 rectTransform이 null입니다.", this);
+            return;
+        }
+
+        Vector2 localPos;
+
+        RectTransform canvasRect = canvas.transform as RectTransform;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            Input.mousePosition,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
+            out localPos);
+
+        rectTransform.anchoredPosition = localPos;
+    }
+
+    public Vector3 GetAimWorldPos(float zPlane = 0f)
     {
         Vector3 aimPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        aimPos.z = zPlane;
         return aimPos;
     }
 }

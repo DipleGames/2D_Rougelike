@@ -23,11 +23,6 @@ public class PlayerView : MonoBehaviour
     [SerializeField] private GameObject _aim;
 
 
-    void Update()
-    {
-        OnAim();
-    }
-
     public void UpdateUIOnChangePlayerVital<T>(T t)
     {
         switch (t)
@@ -81,13 +76,5 @@ public class PlayerView : MonoBehaviour
         level_Text.text = $"LV : {levelSystem.Level}";
         UIManager.Instance.SwitchUI(UIManager.Instance.agumentView.augument_Panel);
         GameManager.Instance.SwitchGame();
-    }
-
-    public void OnAim()
-    {
-        Vector3 aimPos = PlayerManager.Instance.aim.GetAimPos();
-        aimPos.z = 0;
-
-        _aim.transform.position = aimPos;
     }
 }

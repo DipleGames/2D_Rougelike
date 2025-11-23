@@ -9,7 +9,6 @@ public class PlayerManager : SingleTon<PlayerManager>
 
     [Header("Controller")]
     public PlayerController playerController;
-    public Aim aim;
 
     [Header("Model")]
     public GameObject player;
@@ -33,7 +32,6 @@ public class PlayerManager : SingleTon<PlayerManager>
 
         // 2. 그 객체의 컴퍼넌트를 담는다.
         playerController = player.GetComponent<PlayerController>();
-        aim = player.GetComponent<Aim>();
 
         battleSystem = player.GetComponent<BattleSystem>();
         levelSystem = player.GetComponent<LevelSystem>();

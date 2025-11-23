@@ -21,21 +21,21 @@ MonoBehaviour:
   cooldown: 15
   manaCost: 15
   actions:
-  - action: {fileID: 11400000, guid: 8b02a7c42e4a3be47964e22ebb336688, type: 2}
-    parameters:
-      rid: 2773896640084312215
   - action: {fileID: 11400000, guid: 2db5c651977de324d99a4e1ec0221762, type: 2}
     parameters:
-      rid: 2773896640084312219
+      rid: 2773896810579624028
+  - action: {fileID: 11400000, guid: 8b02a7c42e4a3be47964e22ebb336688, type: 2}
+    parameters:
+      rid: 2773896810579624029
   references:
     version: 2
     RefIds:
-    - rid: 2773896640084312215
+    - rid: 2773896810579624028
+      type: {class: DamageAction/DamageParams, ns: , asm: Assembly-CSharp}
+      data:
+        damage: 0.5
+    - rid: 2773896810579624029
       type: {class: AuraAction/AuraParams, ns: , asm: Assembly-CSharp}
       data:
         auraPrefab: {fileID: 3331195370882531115, guid: 78e8788d19161f947953cc6d749ac4c0, type: 3}
         lifeTime: 5
-    - rid: 2773896640084312219
-      type: {class: DamageAction/DamageParams, ns: , asm: Assembly-CSharp}
-      data:
-        damage: 0.1

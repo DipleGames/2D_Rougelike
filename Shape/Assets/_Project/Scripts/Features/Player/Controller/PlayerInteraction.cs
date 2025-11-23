@@ -7,7 +7,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if(_shop != null && _shop.isInteract)
         {
-            if(Input.GetKeyDown(KeyCode.E)) _shop.Interact();
+            if(Input.GetKeyDown(KeyCode.F)) _shop.Interact();
         }
     }
 

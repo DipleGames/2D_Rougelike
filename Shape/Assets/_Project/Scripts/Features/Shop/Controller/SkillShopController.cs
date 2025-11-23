@@ -8,6 +8,8 @@ public class SkillShopController : Shop
     [Header("View")]
     [SerializeField] private ShopView _shopView;
 
+    [SerializeField] private Skill selectSkill;
+
     public override void Interact()
     {
         if(isInteract)
@@ -16,23 +18,57 @@ public class SkillShopController : Shop
         }
     }
     
-    public void OnClickedUpgradeQBtn() // 업그레이드 버튼을 누르는 인풋 -> 모델로 전달
+    public void OnClickedQBtn() // 버튼을 누르는 인풋 -> 모델로 전달
     {
-        _skillShop.UpgradeQSkill();
+        selectSkill = _skillShop.skillUpgradeBtns[0].skill;
+        _shopView.OnSelectSkill(selectSkill);
     }
 
-    public void OnClickedUpgradeWBtn() // 업그레이드 버튼을 누르는 인풋 -> 모델로 전달
+    public void OnClickedWBtn() // 업그레이드 버튼을 누르는 인풋 -> 모델로 전달
     {
-        _skillShop.UpgradeWSkill();
+        selectSkill = _skillShop.skillUpgradeBtns[1].skill;
+        _shopView.OnSelectSkill(selectSkill);
     }
 
-    public void OnClickedUpgradeEBtn() // 업그레이드 버튼을 누르는 인풋 -> 모델로 전달
+    public void OnClickedEBtn() // 업그레이드 버튼을 누르는 인풋 -> 모델로 전달
     {
-        _skillShop.UpgradeESkill();
+        selectSkill = _skillShop.skillUpgradeBtns[2].skill;
+        _shopView.OnSelectSkill(selectSkill);
     }
 
-    public void OnClickedUpgradeRBtn() // 업그레이드 버튼을 누르는 인풋 -> 모델로 전달
+    public void OnClickedRBtn() // 업그레이드 버튼을 누르는 인풋 -> 모델로 전달
     {
-        _skillShop.UpgradeRSkill();
+        selectSkill = _skillShop.skillUpgradeBtns[3].skill;
+        _shopView.OnSelectSkill(selectSkill);
+    }
+
+    public void OnClickedDBtn() // 업그레이드 버튼을 누르는 인풋 -> 모델로 전달
+    {
+        selectSkill = _skillShop.skillUpgradeBtns[4].skill;
+        _shopView.OnSelectSkill(selectSkill);
+    }
+
+    public void OnClickedUpgradeBtn()
+    {
+        if(selectSkill == _skillShop.skillUpgradeBtns[0].skill)
+        {
+            _skillShop.UpgradeQSkill();
+        }
+        else if(selectSkill == _skillShop.skillUpgradeBtns[1].skill)
+        {
+            _skillShop.UpgradeWSkill();
+        }
+        else if(selectSkill == _skillShop.skillUpgradeBtns[2].skill)
+        {
+            _skillShop.UpgradeESkill();
+        }
+        else if(selectSkill == _skillShop.skillUpgradeBtns[3].skill)
+        {
+            _skillShop.UpgradeRSkill();
+        }
+        else if(selectSkill == _skillShop.skillUpgradeBtns[4].skill)
+        {
+            
+        }
     }
 }
