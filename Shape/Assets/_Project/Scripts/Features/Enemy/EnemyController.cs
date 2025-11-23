@@ -141,6 +141,7 @@ public class EnemyController : MonoBehaviour
         var exp = ExpManager.Instance.GetExp();
         exp.transform.position = transform.position;
         GameManager.Instance.IncreaseThreatGuage(30);
+        CoinManager.Instance.AddCoin((int)enemy.hp / 10);
         ParticleSystem ps = PoolManager.Instance.deathEffectPools.GetParticleSystem(transform.position);
         PoolManager.Instance.deathEffectPools.particleQueue.Enqueue(ps); // 생성과 동시에 넣어주기. 근데 왜 disable할때 넣으면 오류나는지 모르겠음.. 트러블슈팅과제
         OriginPool.Return(gameObject);

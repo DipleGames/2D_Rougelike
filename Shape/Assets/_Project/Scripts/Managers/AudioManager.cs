@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class AudioManager : SingleTon<AudioManager>
 {
-    public AudioSource audioSource;
+    [Header("Audio Sources")]
+    public AudioSource bgmSource;   // 브금 재생용
+    public AudioSource sfxSource;   // 효과음 재생용
 
     [SerializeField] private AudioClip[] _sfxs;
 
@@ -15,18 +17,18 @@ public class AudioManager : SingleTon<AudioManager>
         PlayGeneralBGM();
     }
 
-    void PlaySFX()
+    public void PlayUpgradeSFX()
     {
-
+        sfxSource.PlayOneShot(_sfxs[0], 0.5f);
     }
     
     public void PlayGeneralBGM()
     {
         if(GameManager.Instance.gameState == GameState.General)
         {
-            audioSource.clip = _general_BGMs[0];
-            if (audioSource.clip != null)
-                audioSource.Play();    
+            bgmSource.clip = _general_BGMs[0];
+            if (bgmSource.clip != null)
+                bgmSource.Play();    
         }
     }
 
@@ -34,9 +36,9 @@ public class AudioManager : SingleTon<AudioManager>
     {
         if(GameManager.Instance.gameState == GameState.Boss)
         {
-            audioSource.clip = _boss_BGMs[0];
-            if (audioSource.clip != null)
-                audioSource.Play();    
+            bgmSource.clip = _boss_BGMs[0];
+            if (bgmSource.clip != null)
+                bgmSource.Play();    
         }
     }
 }

@@ -11,6 +11,9 @@ public class UIManager : SingleTon<UIManager>
     public AgumentView agumentView;
     public SkillRuntimeView skillRuntimeView;
     public ThreatGaugeView threatGaugeView;
+    public ShopView shopView;
+    public CoinView coinView;
+    public CostView costView;
 
     void OnEnable()  => HideCursor();
     void OnDisable() => ShowCursor();
@@ -31,4 +34,6 @@ public class UIManager : SingleTon<UIManager>
     {
         Cursor.visible = true;
     }
+
+
 }

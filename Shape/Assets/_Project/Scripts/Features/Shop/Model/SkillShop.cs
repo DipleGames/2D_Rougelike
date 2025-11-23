@@ -3,6 +3,7 @@ using UnityEngine;
 public class SkillShop : MonoBehaviour
 {
     public SkillUpgradeBtn[] skillUpgradeBtns;
+    public int[] skillUpgradeCosts = { 10, 20, 20, 50, 10 };
     public void UpgradeQSkill()
     {
         Debug.Log($"{skillUpgradeBtns[0].skill.name}");

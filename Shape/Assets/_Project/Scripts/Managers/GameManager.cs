@@ -53,8 +53,11 @@ public class GameManager : SingleTon<GameManager>
     /// </summary>
     public void OnGeneralPhase()
     {
+        ClearShopUI();
+
         Debug.Log("일반 스테이지");
         gameState = GameState.General;
+        if(Time.timeScale == 0f) SwitchGame();
         _shopGrid.SetActive(false);
         foreach(var gtm in _groundTileMap)
         {
@@ -91,7 +94,7 @@ public class GameManager : SingleTon<GameManager>
         _shopGrid.SetActive(true);
         _shopGrid.transform.position = new Vector3(PlayerManager.Instance.player.transform.position.x - 0.5f, PlayerManager.Instance.player.transform.position.y, 0); 
         
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSecondsRealtime(15f);
         OnGeneralPhase();
     }
 
@@ -105,6 +108,13 @@ public class GameManager : SingleTon<GameManager>
         var objs = GameObject.FindGameObjectsWithTag("BossPattern");
         foreach (var obj in objs)
             Destroy(obj);
+    }
+
+    void ClearShopUI()
+    {
+        var objs = GameObject.FindGameObjectsWithTag("ShopUI");
+        foreach (var obj in objs)
+            obj.SetActive(false);
     }
     
     public void SwitchGame()

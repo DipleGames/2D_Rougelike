@@ -1,4 +1,4 @@
-using JetBrains.Annotations;
+using System;
 using UnityEngine;
 
 public abstract class Shop : MonoBehaviour

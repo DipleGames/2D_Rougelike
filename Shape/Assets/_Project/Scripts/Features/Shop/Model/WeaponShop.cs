@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WeaponShop : MonoBehaviour
 {
+    public int weaponUpgradeCost = 5;
     public void UpgradeWeapon(PlayerManager playerManager)
     {
         var weapon = playerManager.character.weaponInstance;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 [DefaultExecutionOrder(-30)]
 public class PlayerController : MonoBehaviour
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
 
         // 시작점 초기화
         targetPoint = transform.position;
+        StartCoroutine(AutoManaRecoverCoroutine());
     }
 
     public KeyCode key = KeyCode.None;
@@ -122,7 +124,7 @@ public class PlayerController : MonoBehaviour
             // QWER 스킬 로직...
         }
 
-        key = KeyCode.None; 
+        key = KeyCode.None;
     }
 
     void FixedUpdate()
@@ -174,4 +176,13 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(float amount) => Hp -= amount;
 
     public void Die() => pm.spriteRenderer.enabled = false;
+
+    IEnumerator AutoManaRecoverCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2f);
+            Mp += 2f;
+        }
+    }
 }

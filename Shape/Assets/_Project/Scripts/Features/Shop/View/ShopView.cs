@@ -17,6 +17,8 @@ public class ShopView : MonoBehaviour
     public void SwitchShopUI(GameObject shopUI, bool activeSelf)
     {
         shopUI.SetActive(!activeSelf);
+        GameManager.Instance.SwitchGame();
+        if(shopUI == skillShopUI) selectSkill_Img.GetComponent<Image>().enabled = false;
     }
 
     /// <summary>
@@ -24,6 +26,7 @@ public class ShopView : MonoBehaviour
     /// </summary>
     public void OnSelectSkill(Skill skill) // 스킬을 선택하면
     {
+        selectSkill_Img.GetComponent<Image>().enabled = true;
         selectSkill_Img.sprite = skill.skillDefinition.skillIcon;
     }
 }
