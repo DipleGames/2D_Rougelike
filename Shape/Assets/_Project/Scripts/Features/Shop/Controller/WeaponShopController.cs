@@ -12,7 +12,7 @@ public class WeaponShopController : Shop
 
     void Start()
     {
-        OnWeaponUpgradeCostChanged += UIManager.Instance.costView.OnUpdateWeaponCostText;
+        OnWeaponUpgradeCostChanged += UIManager.Instance.shopView.OnUpdateWeaponCostText;
         OnWeaponUpgradeCostChanged.Invoke(_weaponShop.weaponUpgradeCost); //처음 초기화
     }
 

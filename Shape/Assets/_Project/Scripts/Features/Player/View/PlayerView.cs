@@ -9,6 +9,7 @@ public class PlayerView : MonoBehaviour
     [Header("Status Slider")]
     public Slider hpBar;
     public Slider mpBar;
+    public Slider staminaBar;
     public Slider expBar;
 
     [Header("레벨 관련")]
@@ -33,6 +34,7 @@ public class PlayerView : MonoBehaviour
             case PlayerController playerController:
                 hpBar.value = playerController.Hp / playerController.pm.playerStat.stat[StatType.MaxHp];
                 mpBar.value = playerController.Mp / playerController.pm.playerStat.stat[StatType.MaxMp];
+                staminaBar.value = playerController.Stamina / playerController.pm.playerStat.stat[StatType.MaxStamina];
                 break;
             default:
                 break;

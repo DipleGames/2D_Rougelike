@@ -47,6 +47,7 @@ public class StatCalculator : MonoBehaviour
         // 1. 캐릭터 디폴트 스탯 임시 변수에 담고 
         _stat[StatType.MaxHp] = pm.character.baseHp;
         _stat[StatType.MaxMp] = pm.character.baseMp;
+        _stat[StatType.MaxStamina] = pm.character.baseStamina;
         _stat[StatType.Speed] = pm.character.baseSpeed;
         _stat[StatType.Attack] = pm.character.baseAttack;
         _stat[StatType.CriticalProb] = pm.character.CriticalProb;
@@ -69,6 +70,7 @@ public class StatCalculator : MonoBehaviour
         // 1) 성장테이블 기반 스펙업 레벨 디자인 이후 수정
         _stat[StatType.MaxHp] += 10f;
         _stat[StatType.MaxMp] += 10f;
+        _stat[StatType.MaxStamina] += 10f;
         _stat[StatType.Speed] += 0.1f;
         _stat[StatType.Attack] += +2f;
 

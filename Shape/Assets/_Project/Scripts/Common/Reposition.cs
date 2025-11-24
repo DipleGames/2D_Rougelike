@@ -1,34 +1,51 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Reposition : MonoBehaviour
 {
-    void OnTriggerExit2D(Collider2D collision)
-    {    //IsTrigger가 체크된 Collider에서 나갔을 때 동작
-        if (!collision.CompareTag("Area"))
-            return;
-        if (PlayerManager.Instance.player == null)
-            return;
+    private const float CHUNK_SIZE = 64f;
+    private const int GRID_COUNT = 3;
 
-        //거리를 구하기 위해 플레이어 위치와 타일맵 위치 미리 저장
-        Vector3 playerPos = PlayerManager.Instance.player.transform.position;
-        Vector3 myPos = transform.position;
-        float diffX = Mathf.Abs(playerPos.x - myPos.x);
-        float diffY = Mathf.Abs(playerPos.y - myPos.y);
+    [SerializeField] private Transform player; // 카메라나 플레이어 Transform 넣기
 
-        Vector3 targetPoint = PlayerManager.Instance.playerController.targetPoint;
-        float dirX = playerPos.x > targetPoint.x ? -1 : 1;
-        float dirY = playerPos.y > targetPoint.y ? -1 : 1;
+    void Start()
+    {
+        player = PlayerManager.Instance.player.transform;
+    }
 
+    void LateUpdate()
+    {
+        if (player == null) return;
 
-        if (diffX > diffY)
-        {    //X축 이동시
-            transform.Translate(Vector3.right * dirX * 128);
+        float totalSize = CHUNK_SIZE * GRID_COUNT;      // 64 * 3 = 192
+        float halfSpan  = totalSize * 0.5f;             // 96
+
+        Vector3 pos = transform.position;
+        Vector3 c   = player.position;
+
+        // X축 래핑
+        float dx = c.x - pos.x;
+        if (dx > halfSpan)
+        {
+            // 타일이 너무 왼쪽에 있어서, 오른쪽으로 한 바퀴 밀어줌
+            pos.x += totalSize;
         }
-        else if (diffX < diffY)
-        {   //Y축 이동시
-            transform.Translate(Vector3.up * dirY * 128);
+        else if (dx < -halfSpan)
+        {
+            // 타일이 너무 오른쪽에 있어서, 왼쪽으로 한 바퀴 밀어줌
+            pos.x -= totalSize;
         }
- 
+
+        // Y축 래핑
+        float dy = c.y - pos.y;
+        if (dy > halfSpan)
+        {
+            pos.y += totalSize;
+        }
+        else if (dy < -halfSpan)
+        {
+            pos.y -= totalSize;
+        }
+
+        transform.position = pos;
     }
 }

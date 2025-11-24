@@ -11,6 +11,7 @@ public class Character : ScriptableObject
     [Header("캐릭터 전투스펙")]
     public float baseHp;
     public float baseMp;
+    public float baseStamina;
     public float baseSpeed;
     public float baseAttack;
 

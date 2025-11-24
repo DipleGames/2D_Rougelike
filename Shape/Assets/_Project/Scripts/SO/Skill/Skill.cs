@@ -4,7 +4,7 @@ using System;
 
 public enum SkillType { Passive, Active, Utile }
 
-[System.Serializable]
+[Serializable]
 public struct SkillInstance
 {
     public Skill skill;      // 복사본의 정보가 들어갈거임
@@ -18,6 +18,15 @@ public struct SkillInstance
     public bool TryConsume() // 사용 시 쿨다운 시작
     {
         if(PlayerManager.Instance.playerController.Mp < skill.manaCost) return false; // 마나 부족하면 리턴
+
+        if (!IsReady || skill == null) return false;
+        _nextReadyTime = Time.time + skill.cooldown;
+        return true;
+    }
+
+    public bool TryDashConsume(float staminaCost) // 사용 시 쿨다운 시작
+    {
+        if(PlayerManager.Instance.playerController.Stamina < skill.staminaCost) return false; // 마나 부족하면 리턴
 
         if (!IsReady || skill == null) return false;
         _nextReadyTime = Time.time + skill.cooldown;
@@ -43,6 +52,7 @@ public class Skill  : ScriptableObject
     public SkillDefinition skillDefinition;
     public float cooldown;
     public float manaCost;
+    public float staminaCost;
 
 
     [Serializable]

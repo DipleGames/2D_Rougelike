@@ -6,6 +6,7 @@ public enum StatType
 {
     MaxHp,
     MaxMp,
+    MaxStamina,
     Attack,
     Speed,
     CriticalProb,

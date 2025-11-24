@@ -13,8 +13,9 @@ public class PlayerController : MonoBehaviour
     [Header("현재 체력 / 현재 마나")]
     [SerializeField] private float _hp;
     [SerializeField] private float _mp;
+    [SerializeField] private float _stamina;
 
-    public event Action<PlayerController> OnHpChanged, OnMpChanged;
+    public event Action<PlayerController> OnHpChanged, OnMpChanged, OnStaminaChanged;
 
     Rigidbody2D rb;     
     float speed => pm && pm.playerStat && pm.playerStat.stat.ContainsKey(StatType.Speed)
@@ -52,15 +53,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public float Stamina
+    {
+        get => _stamina;
+        set
+        {
+            float max = pm.playerStat ? pm.playerStat.stat[StatType.MaxStamina] : Mathf.Infinity;
+            float nv = Mathf.Clamp(value, 0f, max);
+            if (Mathf.Approximately(_stamina, nv)) return;
+            _stamina = nv;
+            OnStaminaChanged?.Invoke(this);
+        }
+    }
+
     void Start()
     {
         pm = PlayerManager.Instance;
         OnHpChanged += UIManager.Instance.playerView.UpdateUIOnChangePlayerVital;
         OnMpChanged += UIManager.Instance.playerView.UpdateUIOnChangePlayerVital;
+        OnStaminaChanged += UIManager.Instance.playerView.UpdateUIOnChangePlayerVital;
 
         // 시작점 초기화
         targetPoint = transform.position;
         StartCoroutine(AutoManaRecoverCoroutine());
+        StartCoroutine(AutoStaminaRecoverCoroutine());
     }
 
     public KeyCode key = KeyCode.None;
@@ -86,7 +102,7 @@ public class PlayerController : MonoBehaviour
         // 이동 스킬(입력만 여기서받고 fixed update에서 처리해야함)
         if (Input.GetKeyDown(KeyCode.D))
         {
-            if(UIManager.Instance.skillRuntimeView.D_skillSlot.skillInstance.TryConsume())
+            if(UIManager.Instance.skillRuntimeView.D_skillSlot.skillInstance.TryDashConsume(pm.character.D_SkillInstance.staminaCost))
             {
                 dashPressed = true;   
             }
@@ -98,9 +114,9 @@ public class PlayerController : MonoBehaviour
                 pm.battleSystem.autoAttack.AA(pm);
                 break;
             case KeyCode.Q:
-                if(UIManager.Instance.skillRuntimeView.Q_skillSlot.skillInstance.TryConsume())
+                if(UIManager.Instance.skillRuntimeView.Q_skillSlot.skillInstance.TryConsume()) // 쓸수있으면 
                 {
-                    pm.battleSystem.SkillExecutor(pm.character.Q_SkillInstance);
+                    pm.battleSystem.SkillExecutor(pm.character.Q_SkillInstance); // 써라
                 }
                 break;
             case KeyCode.W:
@@ -121,7 +137,6 @@ public class PlayerController : MonoBehaviour
                     pm.battleSystem.SkillExecutor(pm.character.R_SkillInstance);
                 }
                 break;
-            // QWER 스킬 로직...
         }
 
         key = KeyCode.None;
@@ -151,7 +166,7 @@ public class PlayerController : MonoBehaviour
         if (dashPressed)
         {
             dashPressed = false;
-            StartCoroutine(pm.battleSystem.utile.DashRoutine(pm.rb));
+            StartCoroutine(pm.battleSystem.utile.DashRoutine(pm.rb, pm.character.D_SkillInstance.staminaCost));
         }
     }
        
@@ -171,6 +186,7 @@ public class PlayerController : MonoBehaviour
     {
         Hp = newStat[StatType.MaxHp];
         Mp = newStat[StatType.MaxMp];
+        Stamina = newStat[StatType.MaxStamina];
     }
 
     public void TakeDamage(float amount) => Hp -= amount;
@@ -183,6 +199,15 @@ public class PlayerController : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
             Mp += 2f;
+        }
+    }
+
+    IEnumerator AutoStaminaRecoverCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            Stamina += 2f;
         }
     }
 }

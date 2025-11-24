@@ -20,6 +20,7 @@ MonoBehaviour:
     id: 0
   cooldown: 1
   manaCost: 0
+  staminaCost: 20
   actions: []
   references:
     version: 2

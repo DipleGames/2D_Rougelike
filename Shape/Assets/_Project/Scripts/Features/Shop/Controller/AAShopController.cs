@@ -14,8 +14,8 @@ public class AAShopController : Shop
 
     void Start()
     {
-        OnRangeUpgradeCostChanged += UIManager.Instance.costView.OnUpdateRangeCostText;
-        OnPenetrationUpgradeCostChanged += UIManager.Instance.costView.OnUpdatePenetrationCostText;
+        OnRangeUpgradeCostChanged += UIManager.Instance.shopView.OnUpdateRangeCostText;
+        OnPenetrationUpgradeCostChanged += UIManager.Instance.shopView.OnUpdatePenetrationCostText;
 
         //처음 초기화
         OnRangeUpgradeCostChanged.Invoke(_aaShop.rangeUpgradeCost); 

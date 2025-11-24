@@ -14,7 +14,7 @@ public class SkillShopController : Shop
 
     void Start()
     {
-        OnSkillUpgradeCostChanged += UIManager.Instance.costView.OnUpdateSkillCostText;
+        OnSkillUpgradeCostChanged += UIManager.Instance.shopView.OnUpdateSkillCostText;
         for(int i=0; i<5; i++)
         {
             OnSkillUpgradeCostChanged.Invoke(_skillShop.skillUpgradeCosts[i]); //처음 초기화
