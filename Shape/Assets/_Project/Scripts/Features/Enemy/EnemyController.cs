@@ -138,10 +138,11 @@ public class EnemyController : MonoBehaviour
         enemySpeed = enemy.speed;
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, bool isCritical)
     {
         EnemyHP -= amount;
-        PoolManager.Instance.hitTextPools.GetHitText(this, amount);
+        //AudioManager.Instance.PlayEnemyHitSFX();
+        PoolManager.Instance.hitTextPools.GetHitText(this, isCritical, amount);
         _anim.SetTrigger("Hit");
     }
 

@@ -32,7 +32,7 @@ public class SkillProj : MonoBehaviour
             Debug.Log("닿음");
             EnemyController enemyController = collision.GetComponent<EnemyController>();
             float damage = PlayerManager.Instance.playerStat.Stat[StatType.Attack] * _ctx.skillDamage; // 플레이어의 공격력 스탯 * 퓨어 스킬데미지
-            enemyController.TakeDamage(damage); // 플레이어의 공격력 만큼 데미지;
+            enemyController.TakeDamage(damage, false); // 플레이어의 공격력 만큼 데미지;
             if(!_isPenetrate) Destroy(gameObject);
             return;
         }

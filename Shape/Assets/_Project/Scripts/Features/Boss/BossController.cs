@@ -8,11 +8,12 @@ public class BossController : MonoBehaviour
     public GameObject target;
     public Boss[] boss;
 
-    private SpriteRenderer spriteRenderer;
-    private BoxCollider2D boxCollider2D;
-    [SerializeField] private TextMeshProUGUI health_Text;
-    private Animator anim;
-    private Rigidbody2D rb;
+    private SpriteRenderer _spriteRenderer;
+    private BoxCollider2D _boxCollider2D;
+    private TextMeshProUGUI _health_Text;
+    private Slider _health_slider;
+    private Animator _anim;
+    private Rigidbody2D _rb;
 
 
     [Header("보스 스펙")]
@@ -37,13 +38,15 @@ public class BossController : MonoBehaviour
 
     void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
-        health_Text = GetComponentInChildren<TextMeshProUGUI>();
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+        //_health_Text = GetComponentInChildren<TextMeshProUGUI>();
+        _health_slider = GetComponentInChildren<Slider>();
+        _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
 
-        OnBossHpChanged += UpdateBossHealthTextUI;
+        //OnBossHpChanged += UpdateBossHealthTextUI;
+        OnBossHpChanged += UpdateBossHealthBartUI;
         OnBossDie += BossDie;
     }
 
@@ -70,25 +73,30 @@ public class BossController : MonoBehaviour
 
     void UpdateBossHealthTextUI(float maxHp, float currentHp)
     {
-        health_Text.text = $"{(int)currentHp}";
+        _health_Text.text = $"{(int)currentHp}";
+    }
+
+    void UpdateBossHealthBartUI(float maxHp, float currentHp)
+    {
+        _health_slider.value = currentHp / maxHp;
     }
 
     public void TakeDamage(float amount)
     {
         BossHP -= amount; 
-        anim.SetTrigger("Hit");
+        _anim.SetTrigger("Hit");
     }
 
     public void SetColliderSize()
     {
-        var lb = spriteRenderer.localBounds;   // 피벗 반영된 로컬 공간 Bounds
-        boxCollider2D.size   = lb.size;       // 가로/세로
-        boxCollider2D.offset = lb.center;     // 피벗이 중앙이 아니어도 정렬됨
+        var lb = _spriteRenderer.localBounds;   // 피벗 반영된 로컬 공간 Bounds
+        _boxCollider2D.size   = lb.size;       // 가로/세로
+        _boxCollider2D.offset = lb.center;     // 피벗이 중앙이 아니어도 정렬됨
     }
 
     public void BossInit()
     {
-        spriteRenderer.sprite = boss[GameManager.Instance.Stage - 1].sprite;
+        _spriteRenderer.sprite = boss[GameManager.Instance.Stage - 1].sprite;
         BossHP = boss[GameManager.Instance.Stage - 1].bossHp;
     }
 

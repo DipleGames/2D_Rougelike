@@ -21,6 +21,11 @@ public class AudioManager : SingleTon<AudioManager>
     {
         sfxSource.PlayOneShot(_sfxs[0], 0.5f);
     }
+
+    public void PlayEnemyHitSFX()
+    {
+        sfxSource.PlayOneShot(_sfxs[1], 0.5f);
+    }
     
     public void PlayGeneralBGM()
     {

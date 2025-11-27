@@ -12,7 +12,7 @@ public class RotateWeaponObj : MonoBehaviour
     {
         if(collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<EnemyController>().TakeDamage(_damage);
+            collision.GetComponent<EnemyController>().TakeDamage(_damage, false);
             return;
         }
 

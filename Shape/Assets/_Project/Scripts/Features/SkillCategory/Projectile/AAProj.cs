@@ -53,7 +53,7 @@ public class AAProj : Proj
             if (enemy != null)
             {
                 _hitCount++;
-                enemy.TakeDamage(_damage);
+                enemy.TakeDamage(_damage, _isCritical);
                 Debug.Log($"{_damage} 데미지 → Enemy HP: {enemy.EnemyHP}");
             }
 

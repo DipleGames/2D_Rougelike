@@ -159,11 +159,22 @@ public class PoolManager : SingleTon<PoolManager>
             }
         }
 
-        public GameObject GetHitText(EnemyController enemy, float damage)
+        public GameObject GetHitText(EnemyController enemy, bool isCritical, float damage)
         {
             var p = hitTextQueue.Dequeue();
-            p.transform.position = enemy.transform.position + new Vector3(0, 1.6f, 0);
-            p.GetComponentInChildren<TextMeshProUGUI>().text = $"{(int)damage}";
+            p.transform.position = enemy.transform.position + new Vector3(0, 1.8f, 0);
+            TextMeshProUGUI textMeshProUGUI =  p.GetComponentInChildren<TextMeshProUGUI>();
+            textMeshProUGUI.text = $"{(int)damage}";
+            if(isCritical)
+            { 
+                textMeshProUGUI.color = Color.red;
+                p.transform.localScale = new Vector3 (1.2f, 1.2f, 1.2f);
+            }
+            else if(!isCritical)
+            {
+                textMeshProUGUI.color = Color.white;
+                p.transform.localScale = new Vector3 (1f, 1f, 1f);
+            }
             p.gameObject.SetActive(true);
             return p;
         }
