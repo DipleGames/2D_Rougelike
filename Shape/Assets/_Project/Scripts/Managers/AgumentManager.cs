@@ -11,6 +11,7 @@ public class AgumentManager : SingleTon<AgumentManager>
     private PlayerManager _pm;
     private UIManager _um;
     private AgumentDatabase _ad;
+    [SerializeField] private SpecialAgumentExecutor _specialAgumentExecutor;
     HashSet<int> hash = new HashSet<int>();
  
     public GameObject[] agumentBtns;
@@ -67,6 +68,7 @@ public class AgumentManager : SingleTon<AgumentManager>
 
             for (int i = 0; i < _ad.specialAguments.Length; i++)
             {
+                if(_ad.specialAguments[i].isUnique) continue;
                 candidate.Add(i);
             }
 
@@ -105,7 +107,9 @@ public class AgumentManager : SingleTon<AgumentManager>
         if(!data.isSpecial)
             _pm.statCalculator.CalculateOnSelecetAgument(data);
         else if(data.isSpecial)
-            data.specialAgument.ExecuteSpecialAgument();
+        {
+            _specialAgumentExecutor.Executor(data.specialAgument, data.specialAgument.agumentName);
+        }
         _um.SwitchUI(_um.agumentView.augument_Panel);
         hash.Clear();
         GameManager.Instance.SwitchGame();

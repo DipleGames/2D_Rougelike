@@ -4,6 +4,7 @@ using UnityEngine;
 public class Enemy : ScriptableObject
 {
     public Sprite sprite;
+    public Sprite mutationSprtie;
     public float hp;
     public float speed;
     public float attackDamage;

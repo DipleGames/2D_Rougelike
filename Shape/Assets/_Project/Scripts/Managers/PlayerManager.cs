@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [DefaultExecutionOrder(-100)]// 얘가 젤 먼저 실행되야함

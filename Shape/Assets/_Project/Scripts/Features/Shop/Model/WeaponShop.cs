@@ -1,8 +1,15 @@
+using System;
 using UnityEngine;
 
 public class WeaponShop : MonoBehaviour
 {
     public int weaponUpgradeCost = 5;
+    public event Action<int> OnWeaponLevelChanged;
+
+    void Start()
+    {
+        OnWeaponLevelChanged += UIManager.Instance.playerView.UpdateUIOnWeaponLevelUp;
+    }
     public void UpgradeWeapon(PlayerManager playerManager)
     {
         var weapon = playerManager.character.weaponInstance;
@@ -15,6 +22,7 @@ public class WeaponShop : MonoBehaviour
             rotateWeapon.weaponDamage += 3;
 
             rotateWeapon.InitWeapon(PlayerManager.Instance.player);
+            OnWeaponLevelChanged.Invoke(rotateWeapon.weaponLevel);
         }
     }
 

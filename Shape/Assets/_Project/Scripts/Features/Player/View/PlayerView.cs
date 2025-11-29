@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using TMPro;
 
 
 public class PlayerView : MonoBehaviour
@@ -22,6 +23,9 @@ public class PlayerView : MonoBehaviour
     [Header("Shape 성장 시스템 UI")]
     public GameObject shapeGrowth_UI;
     [SerializeField] private List<Text> _statTexts = new List<Text>();
+
+    [Header("웨폰 관련 UI")]
+    public TextMeshProUGUI weaponLv_Text;
 
     [Header("크로스 헤어")]
     [SerializeField] private GameObject _aim;
@@ -87,5 +91,15 @@ public class PlayerView : MonoBehaviour
         level_Text.text = $"LV : {levelSystem.Level}";
         UIManager.Instance.SwitchUI(UIManager.Instance.agumentView.augument_Panel);
         GameManager.Instance.SwitchGame();
+    }
+
+    public void UpdateUIOnWeaponLevelUp(int lv)
+    {
+        weaponLv_Text.text = $"{lv}";
+        if(lv < 5) weaponLv_Text.color = Color.white;
+        else if(lv < 10) weaponLv_Text.color = Color.yellow;
+        else if(lv < 15) weaponLv_Text.color = Color.green;
+        else if(lv < 20) weaponLv_Text.color = Color.magenta;
+        else if(lv < 25) weaponLv_Text.color = Color.red;
     }
 }

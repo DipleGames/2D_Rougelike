@@ -4,30 +4,33 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using DG.Tweening;
 
 public class EnemyController : MonoBehaviour
 {
     public Transform target;
     public PoolManager.EnemyPool OriginPool { get; set; }
-    [SerializeField] private GameObject deathEffectPrefab;
-    [SerializeField] private Transform canvasTr;
+    [SerializeField] private GameObject _deathEffectPrefab;
+    [SerializeField] private Transform _canvasTr;
 
     [Header("적 객체")]
     public Enemy enemy;
 
     [Header("적 스펙")]
     [SerializeField] private float _enemyHp;
+    [SerializeField] private float _maxHp;
+
     public float EnemyHP
     {
         get => _enemyHp;
         set
         {
-            float max = enemy.hp;
-            float nv = Mathf.Clamp(value, 0f, max); // 밸류값이 0과 max사이에서 nv에 저장하고
-            if (Mathf.Approximately(_enemyHp, nv)) return; // 기존 hp값과 새로운 밸류값이 차이가없으면 리턴해버리고
-            float ov = _enemyHp; // 차이가 있다면 기존 hp값을 잠시 넣어둔다음 
-            _enemyHp = nv; // 새로운값을 _enemyMaxHp에 넣는다. 
-            OnEnemyHpChanged.Invoke(max, _enemyHp); // ui 처리 해야함
+            float nv = Mathf.Clamp(value, 0f, _maxHp);
+
+            if (Mathf.Approximately(_enemyHp, nv)) return;
+            _enemyHp = nv;
+
+            OnEnemyHpChanged?.Invoke(_maxHp, _enemyHp);
             if (_enemyHp <= 0f) Die();
         }
     }
@@ -42,6 +45,21 @@ public class EnemyController : MonoBehaviour
     private Slider _health_Slider;
     private Animator _anim;
     private Rigidbody2D _rb;
+
+    [Header("돌연변이인가?")]
+    public bool isMutation = false;
+    
+    [Header("돌연변이 돌진 패턴 설정")]
+    [SerializeField] private float _detectRange = 5f;    // 사거리
+    [SerializeField] private float _chargeTime = 1f;     // 기 모으는 시간
+    [SerializeField] private float _dashDistance = 5f;   // 돌진 거리
+    [SerializeField] private float _dashDuration = 0.2f; // 돌진하는 데 걸리는 시간
+
+    private bool _isCharging = false;
+    private bool _isDashing  = false;
+    private bool _hasHitPlayerOnDash = false;
+    private Vector2 _dashDir;
+
 
     void Awake()
     {
@@ -58,20 +76,44 @@ public class EnemyController : MonoBehaviour
     void Start()
     {    
         target = GameObject.FindWithTag("Player").transform;  
-        
-        SetColliderSize();
     }
 
     void FixedUpdate()
     {
+        // 돌진 중이거나 기 모으는 중에는 기존 Move/Rotate 막기
+        if (_isCharging || _isDashing)
+            return;
+
+        // 사거리 안에 플레이어가 들어오면 돌진 패턴 시작
+        float dist = Vector2.Distance(transform.position, target.position);
+        if (isMutation && dist <= _detectRange)
+        {
+            MutationChargeAttack();
+            return;
+        }
+
+        // 평소에는 기존 AI
         Move();
         Rotate();
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!_isDashing) return;
+        if (_hasHitPlayerOnDash) return;
+
+        if (collision.collider.CompareTag("Player"))
+        {
+            PlayerManager.Instance.playerController.TakeDamage(enemy.attackDamage * 1.5f);
+            _hasHitPlayerOnDash = true;
+        }
+    }
+
+
     void LateUpdate()
     {
         // 부모의 회전을 상쇄시키기
-        canvasTr.rotation = Quaternion.identity;
+        _canvasTr.rotation = Quaternion.identity;
     }
 
     // void EnemyAI() // 나중에 좀 똑똑하게 바꿀때 쓸꺼임
@@ -114,6 +156,29 @@ public class EnemyController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
     }
 
+    /// <summary>
+    /// 초기화 작업
+    /// </summary>
+    public void EnemyInit()
+    {
+        if (isMutation)
+        {
+            _maxHp = enemy.hp * 5f;
+            enemySpeed = enemy.speed;
+            _spriteRenderer.sprite = enemy.mutationSprtie;
+        }
+        else
+        {
+            _maxHp = enemy.hp;
+            enemySpeed = enemy.speed;
+            _spriteRenderer.sprite = enemy.sprite;
+        }
+
+        EnemyHP = _maxHp;   // 현재 체력을 최대체력으로 세팅
+        SetColliderSize();
+    }
+
+
     void UpdateHealthTextUI(float maxHp, float currentHp)
     {
         _health_Text.text = $"{(int)currentHp}";
@@ -131,12 +196,6 @@ public class EnemyController : MonoBehaviour
         _boxCollider2D.offset = lb.center;     // 피벗이 중앙이 아니어도 정렬됨
     }
 
-    public void EnemyInit()
-    {
-        _spriteRenderer.sprite = enemy.sprite;
-        EnemyHP = enemy.hp;
-        enemySpeed = enemy.speed;
-    }
 
     public void TakeDamage(float amount, bool isCritical)
     {
@@ -165,4 +224,48 @@ public class EnemyController : MonoBehaviour
         OriginPool.Return(gameObject);
     }
 
+    void MutationChargeAttack()
+    {
+        if (_isCharging || _isDashing) return;
+
+        _isCharging = true;
+
+        // 1) 이 순간의 플레이어 방향 고정 (이후 플레이어가 움직여도 방향 안 바뀜)
+        _dashDir = (target.position - transform.position).normalized;
+
+        // 리지드바디 멈추기
+        _rb.linearVelocity = Vector2.zero;
+
+        // 돌진 방향으로 회전도 맞춰줌 (선택)
+        float angle = Mathf.Atan2(_dashDir.y, _dashDir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+
+        // 2) DOTween으로 기 모으는 연출
+        //    예시: 살짝 커졌다가 돌아오기 + 붉게 번쩍
+        var seq = DOTween.Sequence();
+
+        // 스케일로 떨리는 느낌
+        seq.Append(transform.DOScale(1.7f, _chargeTime * 0.5f).SetLoops(2, LoopType.Yoyo));
+
+        // 3) 기모으기 끝나면 돌진 시작
+        seq.AppendCallback(() =>
+        {
+            _isCharging = false;
+            _isDashing  = true;
+            _hasHitPlayerOnDash = false;   // ← 이번 돌진 동안 아직 안 맞았다
+
+            Vector3 startPos  = transform.position;
+            Vector3 targetPos = startPos + (Vector3)_dashDir * _dashDistance;
+
+            _rb.linearVelocity = Vector2.zero;
+
+            transform.DOMove(targetPos, _dashDuration)
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    _isDashing = false;
+                });
+        });
+
+    }
 }

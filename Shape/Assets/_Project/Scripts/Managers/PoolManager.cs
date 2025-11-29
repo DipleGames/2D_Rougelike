@@ -12,6 +12,7 @@ public class PoolManager : SingleTon<PoolManager>
     public GameObject enemyPoolsParent;
     public EnemyPoolConfig[] enemyGroups; // 프리팹/초기수 설정
     public List<EnemyPool> enemyPools = new();
+    [SerializeField] private int _mutationProp;
 
 
     [Header("deathEffect Pools")]
@@ -30,7 +31,7 @@ public class PoolManager : SingleTon<PoolManager>
         foreach (var cfg in enemyGroups)
         {
             if (cfg.prefab == null) continue;
-            enemyPools.Add(new EnemyPool(cfg.prefab, Mathf.Max(0, cfg.initialSize), Mathf.Max(cfg.initialSize, cfg.maxSize), enemyPoolsParent.transform));
+            enemyPools.Add(new EnemyPool(cfg.prefab, Mathf.Max(0, cfg.initialSize), Mathf.Max(cfg.initialSize, cfg.maxSize), _mutationProp, enemyPoolsParent.transform));
         }
     }
 
@@ -58,13 +59,15 @@ public class PoolManager : SingleTon<PoolManager>
     {
         public GameObject prefab;
         public int maxSize;
+        private int _mutationProp = 100;
         private readonly Queue<GameObject> _q = new();
-        private readonly HashSet<GameObject> _active = new(); // 살아있는 애들 목록
+        public readonly HashSet<GameObject> active = new(); // 살아있는 애들 목록
 
-        public EnemyPool(GameObject prefab, int initial, int max, Transform parent = null)
+        public EnemyPool(GameObject prefab, int initial, int max, int mutationProp, Transform parent = null)
         {
             this.prefab = prefab;
             maxSize = Mathf.Max(initial, max);
+            _mutationProp = mutationProp;
             for (int i = 0; i < initial; i++)
             {
                 var go = Instantiate(prefab, parent);
@@ -82,29 +85,33 @@ public class PoolManager : SingleTon<PoolManager>
                 go = Instantiate(prefab, parent);
 
             var enemyController = go.GetComponent<EnemyController>();
+           
             enemyController.enemy = enemy;
             enemyController.OriginPool = this; 
+            
+            // 돌연변이 판정
+            enemyController.isMutation = UnityEngine.Random.Range(0,100) < _mutationProp;
 
             if (parent != null)
                 go.transform.SetParent(parent);
 
             go.SetActive(true);
             enemyController.EnemyInit();
-            _active.Add(go);      // 살아있는 리스트에 추가
+            active.Add(go);      // 살아있는 리스트에 추가
             return go;
         }
 
         public void Return(GameObject go)
         {
             go.SetActive(false);
-            _active.Remove(go);   // 살아있는 리스트에서 제거
+            active.Remove(go);   // 살아있는 리스트에서 제거
             _q.Enqueue(go);
         }
 
         public void ReturnAllEnemies()
         {
             // active를 복사해서 도는 게 안전
-            var snapshot = new List<GameObject>(_active);
+            var snapshot = new List<GameObject>(active);
             foreach (var go in snapshot)
             {
                 Return(go);

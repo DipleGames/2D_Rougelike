@@ -22,9 +22,9 @@ public class SpawnManager : SingleTon<SpawnManager>
     [SerializeField, Range(0f, 0.5f)] private float _outOfViewMargin = 0.05f; // 카메라 바깥 판정 마진
 
     [Header("Spawn Control")]
-    [SerializeField] private float _spawnInterval = 1.25f;
-    [SerializeField] private int _maxAlive = 40;           // 동시에 살아있을 최대 수
-    [SerializeField] private int _alive;
+    [SerializeField] private float _spawnInterval;
+    [SerializeField] private int _spawnValue;
+    [SerializeField] private int _maxLive;
 
 
     [Header("Spawn Rect (player-centric)")]
@@ -81,9 +81,12 @@ public class SpawnManager : SingleTon<SpawnManager>
         var wait = new WaitForSeconds(_spawnInterval);
         while (true)
         {
-            if (GameManager.Instance.gameState == GameState.General && _alive < _maxAlive)
-            {
-                TrySpawnEnemy();
+            for(int i =0; i<_spawnValue; i++) // 이걸로 나중에 난이도 설정하면될듯
+            {    
+                if (GameManager.Instance.gameState == GameState.General && _maxLive > poolManager.enemyPools[0].active.Count)
+                {
+                    TrySpawnEnemy();
+                }
             }
             yield return wait;
         }
@@ -157,8 +160,6 @@ public class SpawnManager : SingleTon<SpawnManager>
         var enemy = pool.Get(EnemyManager.Instance.SelectEnemy(), PoolManager.Instance.enemyPoolsParent.transform);
         enemy.transform.position = spawnPos;
         enemy.transform.rotation = Quaternion.identity;
-
-        _alive++;
     }
 
     private bool IsOutsideCameraView(Vector3 worldPos)

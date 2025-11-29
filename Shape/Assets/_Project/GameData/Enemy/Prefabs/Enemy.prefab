@@ -351,10 +351,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7898591094264641400}
   - component: {fileID: 2941478023562634059}
-  - component: {fileID: 8634919190565710497}
   - component: {fileID: 6588994037677721994}
   - component: {fileID: 3605419248836932547}
   - component: {fileID: 634431988915860561}
+  - component: {fileID: 8657391429835817984}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -433,28 +433,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &8634919190565710497
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7089994590353789598}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9fdbe704f3eb80f41a2abdec4339db45, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!50 &6588994037677721994
 Rigidbody2D:
   serializedVersion: 5
@@ -541,12 +519,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  deathEffectPrefab: {fileID: 2090208464395391630, guid: bd68ed84243a3ef4fa5c4d3a3abc4759, type: 3}
-  canvasTr: {fileID: 1501701426095100552}
+  _deathEffectPrefab: {fileID: 0}
+  _canvasTr: {fileID: 1501701426095100552}
   enemy: {fileID: 0}
   _enemyHp: 0
   enemySpeed: 0
   _delay: 1
+  isMutation: 0
+--- !u!95 &8657391429835817984
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7089994590353789598}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9fdbe704f3eb80f41a2abdec4339db45, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8648534553725418896
 GameObject:
   m_ObjectHideFlags: 0

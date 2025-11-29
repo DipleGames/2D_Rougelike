@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: S0_Enemy.01
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: f55b2d0c3ac2a47419c7c6405a3e3511, type: 2}
+  mutationSprtie: {fileID: 21300000, guid: c633821b74d6e0641a95512fafd69c1a, type: 2}
   hp: 100
   speed: 2
   attackDamage: 10
